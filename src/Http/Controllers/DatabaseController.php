@@ -56,17 +56,8 @@ class DatabaseController extends Controller
      */
     private $connection;
 
-    /**
-     * DatabaseActionController's constructor
-     *
-     * @param Request|PrequelDatabaseRequest $request
-     */
-    public function __construct($request)
+    public function __construct()
     {
-        $this->tableName     = $request->table;
-        $this->databaseName  = $request->database;
-        $this->qualifiedName = $request->qualifiedName;
-        $this->model         = $request->model;
         $this->connection    = (new DatabaseConnector())->getConnection();
     }
 
@@ -75,8 +66,10 @@ class DatabaseController extends Controller
      *
      * @return mixed
      */
-    public function getTableData()
+    public function getTableData(Request $request)
     {
+        $this->updateDataFromRequest($request);
+
         // If Model exists
         if ($this->model && $this->databaseName === config("database.connections.mysql.database")) {
             $paginated = $this->model->paginate(config("prequel.pagination"));
@@ -133,8 +126,10 @@ class DatabaseController extends Controller
      *
      * @return mixed
      */
-    public function findInTable()
+    public function findInTable(Request $request)
     {
+        $this->updateDataFromRequest($request);
+
         $column    = (string)Route::current()->parameter("column");
         $queryType = (string)Route::current()->parameter("type");
         $value     = (string)Route::current()->parameter("value");
@@ -161,8 +156,10 @@ class DatabaseController extends Controller
      *
      * @return array
      */
-    public function count(): array
+    public function count(Request $request): array
     {
+        $this->updateDataFromRequest($request);
+
         return [
             "count" => $this->model
                 ? $this->model->count()
@@ -190,5 +187,13 @@ class DatabaseController extends Controller
     public function resetMigrations(): int
     {
         return (new MigrationAction())->reset();
+    }
+
+    private function updateDataFromRequest(Request $request): void
+    {
+        $this->tableName     = $request->table;
+        $this->databaseName  = $request->database;
+        $this->qualifiedName = $request->qualifiedName;
+        $this->model         = $request->model;
     }
 }

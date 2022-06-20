@@ -31,12 +31,8 @@ class PrequelServiceProvider extends ServiceProvider
             return new PrequelDB();
         });
 
-        $this->app->singleton(DatabaseController::class, function ($app) {
-            if ($app->runningInConsole()) {
-                return new DatabaseController($app["request"]);
-            }
-
-            return new DatabaseController($app[PrequelDatabaseRequest::class]);
+        $this->app->singleton(DatabaseController::class, function () {
+            return new DatabaseController();
         });
 
         $this->mergeConfigFrom(
