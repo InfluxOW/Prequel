@@ -3,9 +3,9 @@
 <template>
     <div class="new-row-tab-wrapper">
         <div class="action-wrapper">
-            <ActionInfo class="w-3/5" title="Insert new row"
+            <ActionInfo class="w-full" title="Insert new row"
                         description="Fill in your data and create a new row"></ActionInfo>
-            <ActionInfo class="w-2/5" title="Laravel Actions" description="Generate everything!"></ActionInfo>
+<!--            <ActionInfo class="w-2/5" title="Laravel Actions" description="Generate everything!"></ActionInfo>-->
         </div>
         <div class="action-wrapper">
             <form class="new-row-form" @submit.prevent="saveRow($event)">
@@ -36,7 +36,7 @@
                     </button>
                 </div>
             </form>
-            <BackendActions ref="actions"/>
+<!--            <BackendActions ref="actions"/>-->
         </div>
     </div>
 </template>
@@ -284,7 +284,7 @@ export default {
             .new-row-form {
                 background-color : var(--manage-navbar-bg);
                 @apply rounded;
-                @apply w-3/5;
+                @apply w-full;
                 @apply p-5;
                 @apply m-2;
 
